@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Packages Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Npm Get Thread Group " enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <intProp name="LoopController.loops">-1</intProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">${__P(noThreadsNpmGet, 1)}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${__P(rampUpNpmGet, 1)}</stringProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.duration">${__P(durationOfRunInSec, 1)}</stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get Package Info" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${__P(npmServerName, localhost)}</stringProp>
+          <stringProp name="HTTPSampler.port">${__P(npmPort, 3005)}</stringProp>
+          <stringProp name="HTTPSampler.protocol">${__P(npmProtocol, http)}</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">${__P(npmPackageOwner, @monalisa)}/${__P(npmPackageBaseName, package)}-${__Random(0,1000000)}</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Npm Install" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${__P(npmServerName, localhost)}</stringProp>
+          <stringProp name="HTTPSampler.port">${__P(npmPort, 3005)}</stringProp>
+          <stringProp name="HTTPSampler.protocol">${__P(npmProtocol, http)}</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">${__P(npmPackageOwner, @monalisa)}/${__P(npmPackageBaseName, package)}-${__Random(0,1000000)}</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">AUTHORIZATION</stringProp>
+              <stringProp name="Header.value">${__P(packagesPAT, &quot;&quot;)}</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="Npm Get Constant Throughput Timer" enabled="true">
+          <stringProp name="throughput">${__P(txnPerMinNpmGet, 1)}</stringProp>
+          <intProp name="calcMode">2</intProp>
+        </ConstantThroughputTimer>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Npm Publish Thread Group " enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <intProp name="LoopController.loops">-1</intProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">${__P(noThreadsNpmPublish, 1)}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${__P(rampUpNpmPublish, 1)}</stringProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.duration">${__P(durationOfRunInSec, 1)}</stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Npm Publish" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+    &quot;_id&quot;: &quot;@monalisa/package-${packageUUID}-${package_counter}&quot;,&#xd;
+    &quot;name&quot;: &quot;@monalisa/package-${packageUUID}-${package_counter}&quot;,&#xd;
+    &quot;description&quot;: &quot;&quot;,&#xd;
+    &quot;dist-tags&quot;: {&#xd;
+        &quot;latest&quot;: &quot;1.0.0&quot;&#xd;
+    },&#xd;
+    &quot;versions&quot;: {&#xd;
+        &quot;1.0.0&quot;: {&#xd;
+            &quot;name&quot;: &quot;@monalisa/package-${packageUUID}-${package_counter}&quot;,&#xd;
+            &quot;version&quot;: &quot;1.0.0&quot;,&#xd;
+            &quot;description&quot;: &quot;&quot;,&#xd;
+            &quot;main&quot;: &quot;index.js&quot;,&#xd;
+            &quot;scripts&quot;: {},&#xd;
+            &quot;author&quot;: &quot;&quot;,&#xd;
+            &quot;license&quot;: &quot;MIT&quot;,&#xd;
+            &quot;dependencies&quot;: {&#xd;
+            },&#xd;
+            &quot;readme&quot;: &quot;Hello&quot;,&#xd;
+            &quot;_id&quot;: &quot;@monalisa/package-${packageUUID}-${package_counter}@1.0.0&quot;,&#xd;
+            &quot;_shasum&quot;: &quot;4c85a8cd0a72020d23c219d24b6078fff6680260&quot;,&#xd;
+            &quot;_from&quot;: &quot;.&quot;,&#xd;
+            &quot;_npmVersion&quot;: &quot;3.10.3&quot;,&#xd;
+            &quot;_nodeVersion&quot;: &quot;6.3.0&quot;,&#xd;
+            &quot;_npmUser&quot;: {},&#xd;
+            &quot;dist&quot;: {&#xd;
+                &quot;shasum&quot;: &quot;4c85a8cd0a72020d23c219d24b6078fff6680260&quot;,&#xd;
+                &quot;tarball&quot;: &quot;http://localhost:9001/@monalisa/package-${packageUUID}-${package_counter}/-/@monalisa/package-${packageUUID}-${package_counter}-1.0.0.tgz&quot;&#xd;
+            }&#xd;
+        }&#xd;
+    },&#xd;
+    &quot;readme&quot;: &quot;Hello&quot;,&#xd;
+    &quot;_attachments&quot;: {&#xd;
+        &quot;@monalisa/package-${packageUUID}-${package_counter}-1.0.0.tgz&quot;: {&#xd;
+            &quot;content_type&quot;: &quot;application/octet-stream&quot;,&#xd;
+            &quot;data&quot;: &quot;H4sIAAAAAAAAA+1STWsDIRDd8/6KwUNOZaOpSSCnQumh515DQdxpYtKoqCkLJf+9jqYfh94aWgr7Ls9585wP1Cu9Vxuc+srdLjrbXBic84WUQLxczAvzWY0JUsygEdfZlI9LPm94CXL+0oN8h2NMKuRRflqn7gIf/E/w2gIwqw7IVsBuonYp7TbThDGdfwS7IscLhmicJZPoeMer2mPUwfh0zlTxoEyJjO1xyP+pqtUYc4I6ZoFakA311sGa3YXgwgqsA0pA9KjNk8F+zWAyARxMAsHyzVOppo5p68Jnz2ej0cayw/3D7ftwHvMIVhv80hYHHzCSwB5lJ2Rehaq2p/avX2LEiBEjfhdv/FDgbgAIAAA=&quot;,&#xd;
+            &quot;length&quot;: 275&#xd;
+        }&#xd;
+    }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${__P(npmServerName, localhost)}</stringProp>
+          <stringProp name="HTTPSampler.port">${__P(npmPort, 3005)}</stringProp>
+          <stringProp name="HTTPSampler.protocol">${__P(npmProtocol, https)}</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">${__P(npmPackageOwner, @monalisa)}/package-${packageUUID}-${package_counter}</stringProp>
+          <stringProp name="HTTPSampler.method">PUT</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">AUTHORIZATION</stringProp>
+              <stringProp name="Header.value">${__P(packagesPAT, &quot;&quot;)}</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+          <stringProp name="CounterConfig.start">1</stringProp>
+          <stringProp name="CounterConfig.end">1000000000000000</stringProp>
+          <stringProp name="CounterConfig.incr">1</stringProp>
+          <stringProp name="CounterConfig.name">package_counter</stringProp>
+          <stringProp name="CounterConfig.format"></stringProp>
+          <boolProp name="CounterConfig.per_user">false</boolProp>
+        </CounterConfig>
+        <hashTree/>
+        <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="JSR223 PreProcessor" enabled="true">
+          <stringProp name="cacheKey">true</stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="script">vars.put(&quot;packageUUID&quot;,UUID.randomUUID().toString());</stringProp>
+          <stringProp name="scriptLanguage">groovy</stringProp>
+        </JSR223PreProcessor>
+        <hashTree/>
+        <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="Npm Publish Constant Throughput Timer" enabled="true">
+          <stringProp name="throughput">${__P(txnPerMinNpmPublish,1)}</stringProp>
+          <intProp name="calcMode">2</intProp>
+        </ConstantThroughputTimer>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Docker Push Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <intProp name="LoopController.loops">-1</intProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">${__P(noThreadsDockerPush, 1)}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${__P(rampUpDockerPush, 1)}</stringProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.duration">${__P(durationOfRunInSec, 1)}</stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="Docker Push" enabled="true">
+          <boolProp name="SystemSampler.checkReturnCode">true</boolProp>
+          <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
+          <stringProp name="SystemSampler.command">./run-docker-build-publish.sh</stringProp>
+          <elementProp name="SystemSampler.arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <elementProp name="SystemSampler.environment" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="SystemSampler.directory"></stringProp>
+          <stringProp name="SystemSampler.stdout">./stdout</stringProp>
+          <stringProp name="SystemSampler.stderr">./stderr</stringProp>
+        </SystemSampler>
+        <hashTree/>
+        <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="Docker Push Constant Throughput Timer" enabled="true">
+          <stringProp name="throughput">${__P(txnPerMinDockerPush,1)}</stringProp>
+          <intProp name="calcMode">2</intProp>
+        </ConstantThroughputTimer>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Docker Pull Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <intProp name="LoopController.loops">-1</intProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">${__P(noThreadsDockerPull, 1)}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${__P(rampUpDockerPull, 1)}</stringProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.duration">${__P(durationOfRunInSec, 1)}</stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="Docker Pull" enabled="true">
+          <boolProp name="SystemSampler.checkReturnCode">true</boolProp>
+          <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
+          <stringProp name="SystemSampler.command">./run-docker-pull.sh</stringProp>
+          <elementProp name="SystemSampler.arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <elementProp name="SystemSampler.environment" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="SystemSampler.directory"></stringProp>
+          <stringProp name="SystemSampler.stdout">./stdout</stringProp>
+          <stringProp name="SystemSampler.stderr">./stderr</stringProp>
+        </SystemSampler>
+        <hashTree/>
+        <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="Docker Pull Constant Throughput Timer" enabled="true">
+          <stringProp name="throughput">${__P(txnPerMinDockerPull,1)}</stringProp>
+          <intProp name="calcMode">2</intProp>
+        </ConstantThroughputTimer>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
