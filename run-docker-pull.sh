@@ -24,7 +24,12 @@ done < uploaded-container-names.csv
 
 randomIndex=$(( $RANDOM % ${#containerNames[@]} ))
 CMD="docker pull ${DOCKER_REGISTRY}/${containerNames[randomIndex]}:1"
-${CMD} || ERROR=true
+if [ "${DEBUG}" == true ]; then
+        logger "Command to run: ${CMD}"
+        ${CMD} || ERROR=true
+    else
+        ${CMD} > /dev/null 2>>&1 || ERROR=true
+fi
 if [ "${ERROR}" == true ]; then
     logger "ERROR: ${CMD} failed"
     exit 1
