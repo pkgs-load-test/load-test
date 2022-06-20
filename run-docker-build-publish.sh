@@ -58,7 +58,7 @@ done
 logger "Building image ${image_name}"
 CMD="docker build -t ${DOCKER_REGISTRY}/${OWNER}/${image_name}:${TAG} ${GEN_DIR}/"
 
-${CMD} || ERROR=true
+${CMD} >>stdout 2>>stderr || ERROR=true
 
 if [ "${ERROR}" == true ]; then
     logger "ERROR: ${CMD} failed"
@@ -70,7 +70,7 @@ fi
 logger "Pushing Docker image"
 CMD="docker push ${DOCKER_REGISTRY}/${OWNER}/${image_name}:${TAG}"
 
-${CMD} || ERROR=true
+${CMD} >>stdout 2>>stderr || ERROR=true
 
 if [ "${ERROR}" == true ]; then
     logger "ERROR: ${CMD} failed"
