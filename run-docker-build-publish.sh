@@ -48,7 +48,7 @@ for b in $(seq 1 ${NUMBER_OF_LAYERS}); do
         logger "Command to run: ${CMD}"
         ${CMD} || ERROR=true
     else
-        ${CMD} > /dev/null 2>&1 || ERROR=true
+        ${CMD} > /dev/null 2>>&1 || ERROR=true
     fi
     if [ "${ERROR}" == true ]; then
         logger "ERROR: ${CMD} failed"
@@ -72,7 +72,7 @@ if [ "${DEBUG}" == true ]; then
     logger "Command to run: ${CMD}"
     ${CMD} || ERROR=true
 else
-    ${CMD} > /dev/null 2>&1 || ERROR=true
+    ${CMD} > /dev/null 2>>&1 || ERROR=true
 fi
 
 if [ "${ERROR}" == true ]; then
@@ -94,7 +94,7 @@ logger "Removing temp directory"
 rm -rf ${GEN_DIR}
 
 logger "Removing Docker Image"
-docker rmi -f ${image_name} > /dev/null 2>&1
+docker rmi -f ${image_name} > /dev/null 2>>&1
 
 if [ "${ERROR}" == true ]; then
     logger "ERRORS found"
