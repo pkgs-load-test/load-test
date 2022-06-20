@@ -5,7 +5,7 @@
 THREAD=${1:-standalone}
 
 logger () {
-    echo "  [Thread ${THREAD}] ${1}"
+    echo "  [Thread ${THREAD}] ${1}" >>$1
 }
 
 # Create temp directory
