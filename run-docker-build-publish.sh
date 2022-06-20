@@ -2,8 +2,6 @@
 
 # Build  a single Docker image
 
-[ "${DEBUG}" == true ] && set -x
-
 THREAD=${1:-standalone}
 
 logger () {
@@ -44,36 +42,23 @@ echo 'FROM scratch' > ${GEN_DIR}/Dockerfile
 for b in $(seq 1 ${NUMBER_OF_LAYERS}); do
     file_name=$(openssl rand -hex 16)
     CMD="dd if=/dev/urandom of=${GEN_DIR}/${file_name} bs=${SIZE_OF_LAYER_KB} count=1024"
-    if [ "${DEBUG}" == true ]; then
-        logger "Command to run: ${CMD}"
-        ${CMD} || ERROR=true
-    else
-        ${CMD} > /dev/null 2>>&1 || ERROR=true
-    fi
+    ${CMD} || ERROR=true
+    
     if [ "${ERROR}" == true ]; then
         logger "ERROR: ${CMD} failed"
         exit 1
     fi
+    
     file_size=$(ls -l ${GEN_DIR}/${file_name} | awk '{print $5}')
     logger "Created file ${file_name} (${file_size} bytes)"
     echo "COPY ${file_name} /files/" >> ${GEN_DIR}/Dockerfile
 done
 
-if [ "${DEBUG}" == true ]; then
-    logger "Dockerfile to build"
-    cat ${GEN_DIR}/Dockerfile
-fi
-
 # Build Docker image
 logger "Building image ${image_name}"
 CMD="docker build -t ${DOCKER_REGISTRY}/${OWNER}/${image_name}:${TAG} ${GEN_DIR}/"
 
-if [ "${DEBUG}" == true ]; then
-    logger "Command to run: ${CMD}"
-    ${CMD} || ERROR=true
-else
-    ${CMD} > /dev/null 2>>&1 || ERROR=true
-fi
+${CMD} || ERROR=true
 
 if [ "${ERROR}" == true ]; then
     logger "ERROR: ${CMD} failed"
@@ -84,17 +69,20 @@ fi
 # # Push image
 logger "Pushing Docker image"
 CMD="docker push ${DOCKER_REGISTRY}/${OWNER}/${image_name}:${TAG}"
-if [ "${DEBUG}" == true ]; then
-    logger "Command to run: ${CMD}"
-fi
+
 ${CMD} || ERROR=true
+
+if [ "${ERROR}" == true ]; then
+    logger "ERROR: ${CMD} failed"
+    exit 1
+fi
 
 # Cleanup
 logger "Removing temp directory"
 rm -rf ${GEN_DIR}
 
 logger "Removing Docker Image"
-docker rmi -f ${image_name} > /dev/null 2>>&1
+docker rmi -f ${image_name} || ERROR=true
 
 if [ "${ERROR}" == true ]; then
     logger "ERRORS found"
