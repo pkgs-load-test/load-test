@@ -5,7 +5,7 @@
 THREAD=${1:-standalone}
 
 logger () {
-    echo "  [Thread ${THREAD}] ${1}" >>$1
+    echo "  [Thread ${THREAD}] ${1}" 
 }
 
 # Create temp directory
@@ -58,7 +58,7 @@ done
 logger "Building image ${image_name}"
 CMD="docker build -t ${DOCKER_REGISTRY}/${OWNER}/${image_name}:${TAG} ${GEN_DIR}/"
 
-${CMD} >>stdout 2>>stderr || ERROR=true
+${CMD} || ERROR=true
 
 if [ "${ERROR}" == true ]; then
     logger "ERROR: ${CMD} failed"
@@ -70,7 +70,7 @@ fi
 logger "Pushing Docker image"
 CMD="docker push ${DOCKER_REGISTRY}/${OWNER}/${image_name}:${TAG}"
 
-${CMD} >>stdout 2>>stderr || ERROR=true
+${CMD}  || ERROR=true
 
 if [ "${ERROR}" == true ]; then
     logger "ERROR: ${CMD} failed"
