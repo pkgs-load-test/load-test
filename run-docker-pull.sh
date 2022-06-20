@@ -1,7 +1,5 @@
 #!/bin/bash
 
-[ "${DEBUG}" == true ] && set -x
-
 THREAD=${1:-standalone}
 
 logger () {
@@ -13,23 +11,21 @@ DOCKER_REGISTRY=${DOCKER_REGISTRY?Must set DOCKER_REGISTRY}
 DOCKER_USER=${DOCKER_USER:-admin}
 DOCKER_PASSWORD=${DOCKER_PASSWORD:-password}
 
-while read -r a b c d; do 
+while read -r a ; do 
    containerNames+=($a)
 done < uploaded-container-names.csv
 
 # echo ${containerNames[@]}
 
+docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD} ${DOCKER_REGISTRY} || exit 1
 
 #Pull a random docker image from the above list
 
 randomIndex=$(( $RANDOM % ${#containerNames[@]} ))
 CMD="docker pull ${DOCKER_REGISTRY}/${containerNames[randomIndex]}:1"
-if [ "${DEBUG}" == true ]; then
-        logger "Command to run: ${CMD}"
-        ${CMD} || ERROR=true
-    else
-        ${CMD} > /dev/null 2>>&1 || ERROR=true
-fi
+
+${CMD} || ERROR=true
+
 if [ "${ERROR}" == true ]; then
     logger "ERROR: ${CMD} failed"
     exit 1
