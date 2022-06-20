@@ -24,7 +24,7 @@ docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD} ${DOCKER_REGISTRY} || exit 
 randomIndex=$(( $RANDOM % ${#containerNames[@]} ))
 CMD="docker pull ${DOCKER_REGISTRY}/${containerNames[randomIndex]}:1"
 
-${CMD} || ERROR=true
+${CMD} >>stdout 2>>stderr || ERROR=true
 
 if [ "${ERROR}" == true ]; then
     logger "ERROR: ${CMD} failed"
