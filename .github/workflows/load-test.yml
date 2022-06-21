@@ -11,7 +11,7 @@ env:
   DOCKER_PASSWORD : ${{secrets.PAT_PRW}}
   DOCKER_BUILDKIT : 1
   DOCKER_GEN_ID : ${{ github.run_id }}${{ github.run_attempt }}
-  NUMBER_OF_JOBS : 15
+  NUMBER_OF_JOBS : 30
   
 # Controls when the workflow will run
 on:
