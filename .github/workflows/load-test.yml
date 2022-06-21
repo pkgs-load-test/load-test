@@ -66,8 +66,9 @@ jobs:
         id: set-duration-run
         run: |
           echo "DURATION_OF_RUN=$(cat packages.properties | grep -w "time" | cut -d'=' -f2-)"
-          DURATION_OF_RUN=`expr $DURATION_OF_RUN + 2`
-          echo "::set-output name=duration-of-run::$DURATION_OF_RUN"
+          DR=`expr $DURATION_OF_RUN + 2`
+          echo "$DR"
+          echo "::set-output name=duration-of-run::$DR"
            
     outputs:
       jobs-matrix: ${{ steps.generate-jobs.outputs.jobs-matrix}}
