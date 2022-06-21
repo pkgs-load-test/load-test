@@ -13,6 +13,7 @@ env:
   DOCKER_GEN_ID : ${{ github.run_id }}${{ github.run_attempt }}
   NUMBER_OF_JOBS : 30
   
+  
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
@@ -58,15 +59,25 @@ jobs:
         id: generate-jobs
         run: |
          JOB_STRATEGY_MATRIX=$(node -e "let r=[]; for(let i = 1; i <= process.env.NUMBER_OF_JOBS; i++) { r.push(\"job-\"+i) }; console.log(JSON.stringify(r));")
-         echo "::set-output name=jobs-matrix::$JOB_STRATEGY_MATRIX"    
+         echo "::set-output name=jobs-matrix::$JOB_STRATEGY_MATRIX" 
+       
+      # get duration of run from properties file and set limit + 2 min
+      - name: set-duration-run
+        id: set-duration-run
+        run: |
+          echo "DURATION_OF_RUN=$(cat package.properties | grep -w "time" | cut -d'=' -f2-)"
+          DURATION_OF_RUN = expr $d1 + 2
+          echo "::set-output name=duration-of-run::$DURATION_OF_RUN"
+           
     outputs:
       jobs-matrix: ${{ steps.generate-jobs.outputs.jobs-matrix}}
+      duration-of-run: ${{ steps.set-duration-run.outputs.duration-of-run}}
       
   load-test:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     needs: init
-    continue-on-error: true
+    continue-on-error: ${{fromJSON(needs.init.outputs.duration-of-run)}}
     strategy:
       matrix:
         job: ${{fromJSON(needs.init.outputs.jobs-matrix)}}
@@ -79,7 +90,9 @@ jobs:
         with:
          node-version: 16
          registry-url: https://npm.pkg.github.com
-         
+      - name: display-run-duration
+        run: |
+         echo "Run Dration: ${{fromJSON(needs.init.outputs.duration-of-run)}}"
       - name: cache-apache-jmeter
         id: cache-jmeter
         uses: actions/cache@v3
