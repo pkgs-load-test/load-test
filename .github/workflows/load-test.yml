@@ -66,8 +66,8 @@ jobs:
         id: set-duration-run
         run: |
           echo "DURATION_OF_RUN=$(cat packages.properties | grep -w "time" | cut -d'=' -f2-)"
-          DR=`expr $DURATION_OF_RUN + 2`
-          echo "$DR"
+          DR=$(( ($DURATION_OF_RUN/60) + 1 ))
+          echo "Duration of Run: $DR"
           echo "::set-output name=duration-of-run::$DR"
            
     outputs:
@@ -91,9 +91,6 @@ jobs:
         with:
          node-version: 16
          registry-url: https://npm.pkg.github.com
-      - name: display-run-duration
-        run: |
-         echo "Run Dration: ${{fromJSON(needs.init.outputs.duration-of-run)}}"
       - name: cache-apache-jmeter
         id: cache-jmeter
         uses: actions/cache@v3
