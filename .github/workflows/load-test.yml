@@ -3,7 +3,7 @@
 name: LoadTest
 env:
   JMETER_VERSION: 5.4.3
-  NUMBER_OF_LAYERS : 2
+  NUMBER_OF_LAYERS : 1
   SIZE_OF_LAYER_KB : 1024
   DOCKER_REGISTRY : containers-loadtest.pkg.github.com
   OWNER : monalisa
