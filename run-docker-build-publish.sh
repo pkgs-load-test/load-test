@@ -14,7 +14,10 @@ GEN_DIR=$(mktemp -d)
 NUMBER_OF_LAYERS=${NUMBER_OF_LAYERS:-1}
 SIZE_OF_LAYER_KB=${SIZE_OF_LAYER_KB:-1}
 DOCKER_REGISTRY=${DOCKER_REGISTRY?Must set DOCKER_REGISTRY}
-OWNER=${OWNER:-docker-auto}
+# OWNER=${OWNER:-docker-auto}
+
+# Generating random owner since there is namespace limit
+OWNER=owner-$(openssl rand -hex 4)
 DOCKER_USER=${DOCKER_USER:-admin}
 DOCKER_PASSWORD=${DOCKER_PASSWORD:-password}
 REMOVE_IMAGES=${REMOVE_IMAGES:-true}
