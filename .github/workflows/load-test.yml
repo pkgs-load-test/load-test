@@ -61,13 +61,13 @@ jobs:
          JOB_STRATEGY_MATRIX=$(node -e "let r=[]; for(let i = 1; i <= process.env.NUMBER_OF_JOBS; i++) { r.push(\"job-\"+i) }; console.log(JSON.stringify(r));")
          echo "::set-output name=jobs-matrix::$JOB_STRATEGY_MATRIX" 
        
-      # get duration of run from properties file and set duration of run = limit + 2 min
+      # get duration of run from properties file and set duration of run = limit + 3 min
       - name: set-duration-run
         id: set-duration-run
         run: |
           DURATION_OF_RUN=$(cat packages.properties | grep -w "durationOfRunInSec" | cut -d'=' -f2-)
           echo "Duration of run: $DURATION_OF_RUN"
-          DR=$(( DURATION_OF_RUN / 60 + 2 ))
+          DR=$(( DURATION_OF_RUN / 60 + 3 ))
           echo "Duration of Run: $DR"
           echo "::set-output name=duration-of-run::$DR"
            
