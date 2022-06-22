@@ -81,11 +81,11 @@ fi
 logger "Removing temp directory"
 rm -rf ${GEN_DIR}
 
-logger "Removing Docker Image"
-docker rmi -f ${image_name} || ERROR=true
+# logger "Removing Docker Image"
+# docker rmi -f ${DOCKER_REGISTRY}/${OWNER}/${image_name} || ERROR=true
 
-if [ "${ERROR}" == true ]; then
-    logger "ERRORS found"
-    exit 1
-fi
+# if [ "${ERROR}" == true ]; then
+#     logger "ERRORS found"
+#     exit 1
+# fi
 logger "Completed"
