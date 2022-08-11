@@ -5,7 +5,6 @@ env:
   JMETER_VERSION: 5.4.3
   NUMBER_OF_LAYERS : 4
   SIZE_OF_LAYER_KB : 10
-  DOCKER_REGISTRY : containers-loadtest.pkg.github.com
   DOCKER_REGISTRY : containers-registry-loadtest.service.iad.github.net
   OWNER : monalisa
   DOCKER_USER : monalisa
